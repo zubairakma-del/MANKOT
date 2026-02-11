@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="id" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MALINTAR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        .font-judul {
+            font-family: 'Playfair Display', serif;
+        }
+
+        body {
+            box-sizing: border-box;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatIcon {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+
+            50% {
+                transform: translateY(-20px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 0.8;
+            }
+        }
+
+        .leaf-icon {
+            font-size: 3rem;
+            margin: 0 10px;
+            animation: floatIcon 3s ease-in-out infinite;
+        }
+
+        .leaf-icon:nth-child(2) {
+            animation-delay: .5s
+        }
+
+        .leaf-icon:nth-child(3) {
+            animation-delay: 1s
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(-10px);
+            }
+
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(-5deg);
+            }
+
+            75% {
+                transform: rotate(5deg);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .slide-in {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .quiz-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            transform: translateX(10px);
+        }
+
+        .quiz-option.selected {
+            transform: scale(1.02);
+        }
+
+        .quiz-option.correct {
+            animation: pulse 0.5s ease;
+        }
+
+        .quiz-option.wrong {
+            animation: shake 0.5s ease;
+        }
+
+        .progress-bar {
+            transition: width 0.4s ease;
+        }
+
+        .score-badge {
+            animation: pulse 1s ease infinite;
+        }
+
+        @view-transition {
+            navigation: auto;
+        }
+
+        button,
+        a[class*="bg-"] {
+            transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+            transform: translateY(0);
+        }
+
+        button:hover,
+        a[class*="bg-"]:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        button:active,
+        a[class*="bg-"]:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+    </style>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+</head>
+
+<body class="h-full bg-[#f0fdf4] overflow-x-hidden">
+    <header id="navbar" class="fixed top-0 left-0 w-full z-50 text-white backdrop-blur-md bg-white/10">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+            <h1 id="homeTitle"
+                class="text-2xl md:text-3xl font-extrabold tracking-wide cursor-pointer hover:text-green-200 transition">
+                🌱 AKSILOKA
+            </h1>
+            <nav class="flex gap-5 font-semibold">
+                <button id="menuHome">Beranda</button>
+                <button id="menuArticle">Artikel</button>
+                <button id="menuQuiz">Kuis</button>
+                <button id="menuScore">Skor</button>
+            </nav>
+        </div>
+    </header>
+    <main class="flex-grow">
+        <div id="landingPage" class="min-h-screen w-full flex items-center justify-center relative" style="
+        background-image: url('https://cdn.rri.co.id/berita/Tanjungpinang/o/1717470712793-Desain_tanpa_judul_(7)/7qmurt14r0rpltx.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    ">
+
+            <!-- overlay -->
+            <div class="absolute inset-0 bg-black/50"></div>
+
+            <!-- konten -->
+            <div class="relative z-20 text-center max-w-3xl px-6 text-white">
+                <div class="mb-8">
+                    <span class="leaf-icon">🌿</span>
+                    <span class="leaf-icon">🌍</span>
+                    <span class="leaf-icon">♻️</span>
+                </div>
+
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    Kampanye Kebersihan Lingkungan
+                </h1>
+
+                <p class="text-xl mb-10 text-emerald-100">
+                    Aksi kecil hari ini untuk bumi yang lebih bersih
+                </p>
+
+                <button id="startButton" class="bg-emerald-600 hover:bg-emerald-700 px-8 py-4 rounded-full text-lg">
+                    Mulai
+                </button>
+            </div>
+        </div>
+
+        <div id="articlePage" class="pt-24 min-h-full w-full flex flex-col"
+            style="display: none; background-color: #f0fdf4;">
+            <header class="py-6 px-6 shadow-md" style="background-color: #10b981;">
+                <button id="backButton"
+                    class="px-6 py-2 rounded-lg font-medium transition-all duration-300 hover:shadow-lg"
+                    style="background-color: #ffffff; color: #059669;"> ← Kembali </button>
+            </header>
+            <main class="flex-1 px-6 py-12">
+                <article class="max-w-4xl mx-auto">
+                    <div class="text-center mb-12">
+                        <div class="text-6xl mb-6">🌱</div>
+                        <h1 id="articleTitle" class="text-5xl font-bold mb-4" style="color: #065f46;">Kampanye
+                            Kebersihan
+                            Lingkungan</h1>
+                        <div class="w-24 h-1 mx-auto rounded-full" style="background-color: #10b981;"></div>
+                    </div>
+
+                    <div class="space-y-8 text-lg leading-relaxed" style="color: #064e3b;">
+                        <section class="p-8 rounded-2xl shadow-lg" style="background-color: #ffffff;">
+                            <h2 class="text-3xl font-bold mb-4 flex items-center" style="color: #059669;"><span
+                                    class="mr-3">🎯</span> Mengapa Kebersihan Lingkungan Penting?</h2>
+                            <div class="flex justify-center">
+                                <img src="https://enesis.com/wp-content/uploads/pentingnya-menjaga-kebersihan-lingkungan.jpg"
+                                    class="rounded-xl shadow-md max-w-full h-auto" />
+                            </div>
+                            <p><br></p>
+                            <div class="space-y-4">
+                                <p class="indent-4">Kebersihan lingkungan sangat penting untuk menciptakan kehidupan
+                                    yang
+                                    sehat, nyaman, dan aman. Lingkungan bersih mencegah penyakit (demam berdarah &
+                                    diare)
+                                    yang disebarkan bakteri/parasit, meningkatkan kualitas hidup, menjaga keindahan,
+                                    serta
+                                    mendukung kelestarian ekosistem.</p>
+                                <p class="indent-4">Kebersihan lingkungan adalah tanggung jawab bersama untuk memastikan
+                                    lingkungan yang layak dan aman bagi generasi mendatang. Langkah sederhana untuk
+                                    memulai
+                                    adalah dengan membuang sampah pada tempatnya, memilah sampah organik dan anorganik,
+                                    serta rutin melakukan kerja bakti di lingkungan sekitar.</p>
+                            </div>
+                        </section>
+
+                        <section class="p-8 rounded-2xl shadow-lg" style="background-color: #ffffff;">
+                            <h2 class="text-3xl font-bold mb-4 flex items-center" style="color: #059669;"><span
+                                    class="mr-3">😔</span>Permasalahan Lingkungan </h2>
+                            <div class="flex justify-center">
+                                <img src="https://kieraha.com/wp-content/uploads/2018/11/Ilustrasi-sampah-yang-bertebaran-di-laut.-Istimewa.jpeg"
+                                    class="rounded-xl shadow-md max-w-full h-auto" />
+                            </div>
+                            <p><br></p>
+                            <div class="space-y-4">
+                                <p class="indent-4">Lingkungan hidup sedang menghadapi krisis serius yang didorong oleh
+                                    aktivitas manusia, mulai dari perubahan iklim, pencemaran plastik, hingga
+                                    deforestasi.
+                                    Sebagai negara kepulauan, Indonesia sangat rentan terhadap dampak perubahan iklim.
+                                    Kerusakan lingkungan ini secara langsung mengancam kelangsungan hidup manusia dan
+                                    keanekaragaman hayati.</p>
+                            </div>
+                            <ul class="space-y-4 pl-6 mt-4">
+                                <li class="flex items-start"><span class="mr-3 text-2xl">*</span>
+                                    <span><strong>Deforestasi
+                                            dan Kebakaran Hutan:</strong> Kehilangan hutan tropis yang tinggi akibat
+                                        alih
+                                        fungsi lahan perkebunan dan penebangan liar.</span>
+                                </li>
+                                <li class="flex items-start"><span class="mr-3 text-2xl">*</span>
+                                    <span><strong>Pencemaran
+                                            Sampah Plastik:</strong> Indonesia menjadi salah satu penyumbang sampah
+                                        plastik
+                                        terbesar ke lautan.</span>
+                                </li>
+                                <li class="flex items-start"><span class="mr-3 text-2xl">*</span> <span><strong>Krisis
+                                            Air
+                                            Bersih:</strong> Pencemaran sungai oleh limbah industri dan rumah tangga
+                                        merusak
+                                        sumber air bersih.</span></li>
+                            </ul>
+                        </section>
+
+                        <section class="p-8 rounded-2xl shadow-lg" style="background-color: #ffffff;">
+                            <h2 class="text-3xl font-bold mb-4 flex items-center" style="color: #059669;"><span
+                                    class="mr-3">♻️</span> Langkah Nyata yang Bisa Dilakukan</h2>
+                            <div class="flex justify-center">
+                                <img src="https://www.theracksack.com/wp-content/uploads/elementor/thumbs/reduce-reuse-recycle-scaled-qxfeylxhqp2l8545jnufkyfvv4byp8ae5zwcidq6iw.jpg"
+                                    class="rounded-xl shadow-md max-w-full h-auto" />
+                            </div>
+                            <p><br></p>
+                            <ul class="space-y-3 ml-6">
+                                <li class="flex items-start"><span class="mr-3 text-2xl">✓</span>
+                                    <span><strong>Reduce (Mengurangi):
+                                        </strong> Mengurangi penggunaan plastik sekali pakai (kantong belanja, sedotan,
+                                        botol minum). </span>
+                                </li>
+                                <li class="flex items-start"><span class="mr-3 text-2xl">✓</span>
+                                    <span><strong>Reuse (Menggunakan Kembali):
+                                        </strong> Menggunakan kembali barang-barang yang masih layak pakai untuk
+                                        mengurangi tumpukan sampah</span>
+                                </li>
+                                <li class="flex items-start"><span class="mr-3 text-2xl">✓</span>
+                                    <span><strong>Recycle (Mendaur Ulang):
+                                        </strong> Memilah sampah organik dan anorganik, serta mendaur ulang sampah yang
+                                        dapat diolah.</span>
+                                </li>
+                                <li class="flex items-start"><span class="mr-3 text-2xl">✓</span>
+                                    <span><strong>Hindari Membakar Sampah:
+                                        </strong> Membakar sampah dapat menyebabkan polusi udara beracun. </span>
+                                </li>
+                                <li class="flex items-start"><span class="mr-3 text-2xl">✓</span>
+                                    <span><strong>Tanam Pohon:
+                                        </strong> Turut berkontribusi dalam penghijauan untuk lingkungan yang
+                                        lebih asri.</span>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <section class="p-8 rounded-2xl shadow-lg" style="background-color: #ffffff;">
+                            <h2 class="text-3xl font-bold mb-4 flex items-center" style="color: #059669;"><span
+                                    class="mr-3">🌍</span> Dampak Positif untuk Masa Depan</h2>
+                            <div class="flex justify-center">
+                                <img src="https://blog2.kelaspintar.id/blog/wp-content/uploads/2021/03/Inilah-Berbagai-Negara-Dengan-Hutan-Hujan-Tropis-Terbesar-Di-Dunia.jpg"
+                                    class="rounded-xl shadow-md max-w-full h-auto" />
+                            </div>
+                            <p><br></p>
+                            <p class="mb-4">Setiap tindakan kecil yang kita lakukan hari ini akan berdampak besar untuk
+                                masa
+                                depan. Dengan menjaga kebersihan lingkungan, kita:</p>
+                            <ul class="space-y-2 ml-6">
+                                <li>• Menciptakan udara yang lebih bersih dan segar</li>
+                                <li>• Melindungi sumber air dari pencemaran</li>
+                                <li>• Menjaga habitat flora dan fauna</li>
+                                <li>• Mengurangi risiko bencana alam</li>
+                                <li>• Mewariskan bumi yang lebih baik untuk anak cucu</li>
+                                <li>• Meningkatkan kualitas hidup masyarakat secara keseluruhan</li>
+                            </ul>
+                        </section>
+
+                        <section class="p-8 rounded-2xl shadow-lg text-center" style="background-color: #10b981;">
+                            <h2 class="text-3xl font-bold mb-4" style="color: #ffffff;">😄 Mari Bergerak Bersama!</h2>
+                            <p class="text-xl mb-6" style="color: #d1fae5;">Perubahan dimulai dari diri sendiri.
+                                Mulailah
+                                dari hal-hal kecil di sekitar kita. Ajak keluarga, teman, dan tetangga untuk ikut peduli
+                                terhadap kebersihan lingkungan. Bersama kita bisa membuat perubahan!</p>
+                            <button id="nextToQuizButton"
+                                class="px-10 py-4 text-xl font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                                style="background-color: #ffffff; color: #059669;"> Ikuti Kuis &amp; Angket 📝 </button>
+                        </section>
+                    </div>
+                </article>
+            </main>
+        </div>
+
+        <div id="formPage" class="pt-24 min-h-full w-full flex flex-col"
+            style="display:none; background-color:#f0fdf4;">
+            <header class="py-6 px-6" style="background-color:#f0fdf4;">
+                <button id="backFromFormButton">
+
+                </button>
+            </header>
+            <main class="flex-1 flex items-center justify-center px-6">
+                <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl">
+                    <h2 class="text-3xl font-bold mb-6 text-center text-green-700">Data Peserta</h2>
+                    <form id="userForm" class="space-y-4">
+                        <input id="nama" type="text" placeholder="Nama Lengkap" required
+                            class="w-full p-3 border rounded-lg">
+                        <input id="kelas" type="text" placeholder="Kelas" required class="w-full p-3 border rounded-lg">
+                        <button type="submit" class="w-full py-3 rounded-lg bg-green-600 text-white font-semibold">Mulai
+                            Kuis</button>
+                    </form>
+                </div>
+            </main>
+        </div>
+
+        <div id="quizPage" class="pt-24 min-h-full w-full flex flex-col"
+            style="display: none; background-color: #f0fdf4;">
+            <header class="py-6 px-6" style="background-color: #f0fdf4;">
+                <div class="max-w-4xl mx-auto flex justify-between items-center">
+                    <button id="backFromQuizButton"></button>
+                    <div id="scoreDisplay" style="display:none;"></div>
+
+                </div>
+            </header>
+            <main class="flex-1 px-6 py-12">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-8">
+                        <div class="text-6xl mb-4">📝</div>
+                        <h1 id="quizTitle" class="text-5xl font-bold mb-4" style="color: #065f46;">Kuis Kebersihan
+                            Lingkungan</h1>
+                        <div class="w-full bg-gray-200 rounded-full h-3 mb-4">
+                            <div id="progressBar" class="progress-bar h-3 rounded-full"
+                                style="width: 0%; background-color: #10b981;"></div>
+                        </div>
+                        <p class="text-lg" style="color: #059669;">Pertanyaan <span id="currentQuestion">1</span> dari
+                            10
+                        </p>
+                    </div>
+                    <div id="quizContent" class="space-y-6"></div>
+                    <div id="resultSection" class="hidden">
+                        <div class="text-center p-12 rounded-2xl shadow-2xl slide-in"
+                            style="background-color: #ffffff;">
+                            <div id="resultEmoji" class="text-8xl mb-6">🎉</div>
+                            <h2 class="text-4xl font-bold mb-4" style="color: #059669;">Selamat!</h2>
+                            <p class="text-2xl mb-6" style="color: #065f46;">Skor Anda: <span id="finalScore"
+                                    class="font-bold score-badge" style="color: #10b981;">0</span>/10</p>
+                            <div id="resultMessage" class="text-xl mb-8 p-6 rounded-xl"
+                                style="background-color: #d1fae5; color: #065f46;"></div>
+                            <div class="p-8 rounded-xl mb-8" style="background-color: #ecfdf5;">
+                                <h3 class="text-2xl font-bold mb-4" style="color: #059669;">💪 Komitmen mu:</h3>
+                                <p class="text-lg leading-relaxed" style="color: #065f46;">Terima kasih telah mengikuti
+                                    kuis
+                                    ini! Dengan pengetahuan yang kamu miliki, mari bersama-sama menjaga kebersihan
+                                    lingkungan. Mulai dari hal kecil seperti membuang sampah pada tempatnya.
+                                    <strong>Setiap
+                                        tindakan kecil bisa membuat perubahan besar!</strong>
+                                </p>
+                            </div>
+                            <button id="retakeQuizButton"
+                                class="px-10 py-4 text-xl font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                                style="background-color: #10b981; color: #ffffff;"> 🔄 Ulangi Kuis </button>
+                            <button id="lihatSkor"
+                                class="mt-4 px-10 py-4 text-xl font-semibold rounded-full bg-green-600 text-white"> 📊
+                                Lihat
+                                Semua Skor </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <div id="scorePage" class="pt-28 min-h-full w-full flex flex-col bg-[#f0fdf4]" style="display:none">
+            <h2 class="text-4xl font-bold mb-6 text-green-700 text-center">📊 Daftar Hasil Peserta</h2>
+            <div id="scoreList" class="max-w-2xl mx-auto space-y-3 mb-8"></div>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button id="backToLanding" class="px-8 py-3 rounded-lg bg-green-600 text-white font-semibold">🏠
+                    Beranda</button>
+                <button id="backToQuiz" class="px-8 py-3 rounded-lg bg-emerald-600 text-white font-semibold">🔄 Ulangi
+                    Kuis</button>
+            </div>
+        </div>
+
+        <div id="aboutPage" class="pt-28 min-h-screen w-full bg-[#f0fdf4]" style="display:none">
+            <div class="max-w-4xl mx-auto px-6">
+                <h2 class="text-4xl font-bold text-green-700 mb-6 text-center">ℹ️ Tentang Kami</h2>
+
+                <div class="bg-white p-8 rounded-2xl shadow-lg text-lg leading-relaxed text-green-900">
+                    <p class="mb-4">
+                        <strong>AKSILOKA</strong> adalah platform edukasi dan kampanye kebersihan lingkungan
+                        yang bertujuan meningkatkan kesadaran masyarakat akan pentingnya menjaga lingkungan.
+                    </p>
+                    <p class="mb-4">
+                        Website ini dibuat sebagai media pembelajaran interaktif melalui artikel,
+                        kuis, dan kampanye aksi nyata peduli lingkungan.
+                    </p>
+                    <p>
+                        Kami percaya bahwa <strong>aksi kecil hari ini</strong> dapat menciptakan
+                        <strong>perubahan besar di masa depan</strong>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="contactPage" class="pt-28 min-h-screen w-full bg-[#f0fdf4]" style="display:none">
+            <div class="max-w-4xl mx-auto px-6">
+                <h2 class="text-4xl font-bold text-green-700 mb-6 text-center">📞 Kontak</h2>
+
+                <div class="bg-white p-8 rounded-2xl shadow-lg text-lg text-green-900 space-y-4">
+                    <p>
+                        Jika ingin menghubungi kami atau memberikan saran, silakan melalui:
+                    </p>
+
+                    <ul class="space-y-2">
+                        <li>📧 Email: <strong>aksilokamankota@gmail.com</strong></li>
+                        <li>🏫 Sekolah: <strong>MAN KOTA BLITAR</strong></li>
+                        <li>🌍 Lokasi: <strong>Indonesia</strong></li>
+                    </ul>
+
+                    <p class="text-sm opacity-80 mt-4">
+                        Kami terbuka terhadap kritik dan saran demi pengembangan website ini.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="copyrightPage" class="pt-28 min-h-screen w-full bg-[#f0fdf4]" style="display:none">
+            <div class="max-w-4xl mx-auto px-6">
+                <h2 class="text-4xl font-bold text-green-700 mb-6 text-center">© Hak Cipta</h2>
+
+                <div class="bg-white p-8 rounded-2xl shadow-lg text-lg leading-relaxed text-green-900">
+                    <p class="mb-4">
+                        Seluruh konten pada website <strong>AKSILOKA</strong> dilindungi oleh hak cipta.
+                    </p>
+                    <p class="mb-4">
+                        Dilarang menyalin, menggandakan, atau mendistribusikan konten tanpa izin
+                        dari pembuat.
+                    </p>
+                    <p class="font-semibold">
+                        © 2026 AKSILOKA
+                        <br>
+                        Ahmad Jauharul & Muhammad Zubair Akma
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="joinPage" class="pt-28 min-h-screen w-full bg-[#f0fdf4]" style="display:none">
+            <div class="max-w-4xl mx-auto px-6 text-center">
+
+                <h2 class="text-4xl font-bold text-green-700 mb-6">
+                    🌿 Bergabung dengan Komunitas Pecinta Alam
+                </h2>
+
+                <!-- Ilustrasi -->
+                <div class="flex justify-center mb-8">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp Group"
+                        class="w-36 h-36 object-contain float-animation">
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-lg text-lg leading-relaxed text-green-900">
+                    <p class="mb-4">
+                        Ingin berkontribusi lebih nyata dalam menjaga lingkungan?
+                    </p>
+
+                    <p class="mb-6">
+                        Yuk bergabung dengan <strong>Grup WhatsApp Komunitas Pecinta Alam</strong>
+                        untuk mendapatkan informasi kegiatan:
+                    </p>
+
+                    <ul class="space-y-2 mb-6 text-left max-w-md mx-auto">
+                        <li>🌱 Program penanaman pohon</li>
+                        <li>♻️ Edukasi & diskusi lingkungan</li>
+                        <li>🧹 Aksi bersih-bersih bersama</li>
+                        <li>📢 Informasi event & kampanye terbaru</li>
+                    </ul>
+
+                    <a href="https://chat.whatsapp.com/C0AAq8Gzrb6I91xg9zSdem?mode=gi_c" target="_blank"
+                        class="inline-block px-10 py-4 bg-green-600 text-white rounded-full text-lg font-semibold hover:scale-105 transition shadow-lg">
+                        💬 Join Grup WhatsApp
+                    </a>
+
+                    <div class="mt-6">
+                        <button onclick="showPage(landingPage)" class="text-sm text-green-700 hover:underline">
+                            ← Kembali ke Beranda
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <footer id="globalFooter" class="bg-emerald-800 text-emerald-100 mt-auto">
+
+            <div class="max-w-7xl mx-auto px-6 py-14 grid gap-10 md:grid-cols-3">
+
+                <!-- Brand -->
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                        🌱 AKSILOKA
+                    </h3>
+                    <p class="text-sm leading-relaxed opacity-90">
+                        Platform edukasi dan kampanye kebersihan lingkungan untuk menumbuhkan
+                        kesadaran dan aksi nyata demi masa depan bumi yang lebih bersih.
+                    </p>
+                </div>
+
+                <!-- Navigasi -->
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Informasi</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li>
+                            <button onclick="showPage(aboutPage)" class="hover:text-white transition">
+                                ℹ️ Tentang Kami
+                            </button>
+                        </li>
+                        <li>
+                            <button onclick="showPage(contactPage)" class="hover:text-white transition">
+                                📞 Kontak
+                            </button>
+                        </li>
+                        <li>
+                            <button onclick="showPage(copyrightPage)" class="hover:text-white transition">
+                                © Hak Cipta
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Tim -->
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Tim Pengembang</h4>
+                    <p class="text-sm text-white">Ahmad Jauharul Umam Muhsin</p>
+                    <p class="text-sm text-white mb-4">Muhammad Zubair Akma</p>
+
+                    <button onclick="showPage(joinPage)"
+                        class="px-6 py-3 rounded-full bg-white text-emerald-700 font-semibold text-sm hover:scale-105 transition shadow-md">
+                        🌿 Join Komunitas
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="border-t border-emerald-700 text-center text-xs py-4 opacity-80">
+                © 2026 AKSILOKA • Bersama Jaga Lingkungan 🌎
+            </div>
+
+        </footer>
+
+
+
+        <script>
+            const defaultConfig = {
+                main_title: "Bersama Jaga Bumi Kita",
+                main_subtitle: "Mari bersama-sama menjaga kebersihan lingkungan untuk masa depan yang lebih hijau",
+                start_button: "Mulai Sekarang",
+                article_title: "Kampanye Kebersihan Lingkungan",
+                next_button: "Ikuti Kuis📝",
+                quiz_title: "Kuis Kebersihan Lingkungan",
+                back_button: "← Kembali",
+                creator_label: "Dibuat oleh:",
+                creator_name_1: "Ahmad Jauharul",
+                creator_name_2: "Muhammad Zubair Akma",
+                primary_color: "#10b981",
+                secondary_color: "#ffffff",
+                text_color: "#064e3b",
+                accent_color: "#059669",
+                surface_color: "#f0fdf4",
+                font_family: "system-ui",
+                font_size: 16
+            };
+
+            const landingPage = document.getElementById('landingPage');
+            const articlePage = document.getElementById('articlePage');
+            const quizPage = document.getElementById('quizPage');
+            const startButton = document.getElementById('startButton');
+            const backButton = document.getElementById('backButton');
+            const nextToQuizButton = document.getElementById('nextToQuizButton');
+            const backFromQuizButton = document.getElementById('backFromQuizButton');
+            const retakeQuizButton = document.getElementById('retakeQuizButton');
+
+            const formPage = document.getElementById('formPage');
+            const backFromFormButton = document.getElementById('backFromFormButton');
+
+            const scorePage = document.getElementById('scorePage');
+            const scoreList = document.getElementById('scoreList');
+            const backToLanding = document.getElementById('backToLanding');
+            const backToQuiz = document.getElementById('backToQuiz');
+            const homeTitle = document.getElementById('homeTitle');
+            const navbar = document.getElementById('navbar');
+            const globalFooter = document.getElementById('globalFooter');
+
+            const aboutPage = document.getElementById('aboutPage');
+            const contactPage = document.getElementById('contactPage');
+            const copyrightPage = document.getElementById('copyrightPage');
+            const joinPage = document.getElementById('joinPage');
+
+            const menuHome = document.getElementById('menuHome');
+            const menuArticle = document.getElementById('menuArticle');
+            const menuQuiz = document.getElementById('menuQuiz');
+            const menuScore = document.getElementById('menuScore');
+
+            function showPage(page) {
+                const pages = [
+                    landingPage,
+                    articlePage,
+                    formPage,
+                    quizPage,
+                    scorePage,
+                    aboutPage,
+                    contactPage,
+                    copyrightPage,
+                    joinPage
+                ];
+
+                pages.forEach(p => p.style.display = 'none');
+
+                page.style.display = 'flex';
+
+                if (page === landingPage || page === articlePage) {
+                    globalFooter.classList.remove('hidden');
+                } else {
+                    globalFooter.classList.add('hidden');
+                }
+                if (page === landingPage) {
+                    navbar.className =
+                        'fixed top-0 left-0 w-full z-50 text-white backdrop-blur-md bg-white/10';
+                    homeTitle.className =
+                        'text-2xl md:text-3xl font-extrabold tracking-wide cursor-pointer text-white';
+                } else if (page === articlePage) {
+                    navbar.className =
+                        'fixed top-0 left-0 w-full z-50 bg-emerald-600 text-white shadow';
+                    homeTitle.className =
+                        'text-2xl md:text-3xl font-extrabold tracking-wide cursor-pointer text-white';
+                } else {
+                    navbar.className =
+                        'fixed top-0 left-0 w-full z-50 bg-emerald-600 text-white shadow';
+                    homeTitle.className =
+                        'text-2xl md:text-3xl font-extrabold tracking-wide cursor-pointer text-white';
+                }
+                window.scrollTo(0, 0);
+            }
+
+            homeTitle.addEventListener('click', () => showPage(landingPage));
+            menuHome.addEventListener('click', () => showPage(landingPage));
+            menuArticle.addEventListener('click', () => showPage(articlePage));
+            menuQuiz.addEventListener('click', () => showPage(formPage));
+            menuScore.addEventListener('click', () => showPage(scorePage));
+            window.addEventListener('popstate', () => showPage(landingPage));
+
+            startButton.addEventListener('click', () => showPage(articlePage));
+            backButton.addEventListener('click', () => showPage(landingPage));
+            nextToQuizButton.addEventListener('click', () => showPage(formPage));
+            backFromFormButton.addEventListener('click', () => showPage(articlePage));
+
+            backToLanding.addEventListener('click', () => {
+                showPage(landingPage);
+            });
+
+            backToQuiz.addEventListener('click', () => {
+                showPage(formPage);
+                currentQuestionIndex = 0;
+                score = 0;
+                userAnswers = [];
+                document.getElementById('resultSection').classList.add('hidden');
+                document.getElementById('quizContent').classList.remove('hidden');
+                startQuiz();
+            });
+
+            backFromQuizButton.addEventListener('click', () => showPage(landingPage));
+
+            const quizQuestions = [
+                {
+                    question: "Berapa lama waktu yang dibutuhkan plastik untuk terurai di alam?",
+                    options: ["10-20 tahun", "50-100 tahun", "200-500 tahun", "1000 tahun lebih"],
+                    correct: 2,
+                    emoji: "♻️"
+                },
+                {
+                    question: "Apa prinsip 3R dalam pengelolaan sampah?",
+                    options: ["Reuse, Recycle, Remake", "Reduce, Remove, Remake", "Remove, Reuse, Recycle", "Reduce, Reuse, Recycle"],
+                    correct: 3,
+                    emoji: "🔄"
+                },
+                {
+                    question: "Manakah yang BUKAN termasuk sampah organik?",
+                    options: ["Sisa sayuran", "Botol plastik", "Daun kering", "Kulit buah"],
+                    correct: 1,
+                    emoji: "🗑️"
+                },
+                {
+                    question: "Apa dampak utama dari sampah plastik di laut?",
+                    options: ["Membahayakan kehidupan laut", "Membuat air lebih jernih", "Menambah oksigen", "Tidak ada dampak"],
+                    correct: 0, emoji: "🌊"
+                },
+                {
+                    question: "Berapa jenis sampah yang harus kita pilah sdi rumah?",
+                    options: ["Tidak perlu dipilah", "1 jenis saja", "Minimal 2 jenis (organik & anorganik)", "5 jenis"],
+                    correct: 2,
+                    emoji: "🏠"
+                },
+                {
+                    question: "Apa yang sebaiknya kita lakukan dengan sampah organik?",
+                    options: ["Dibakar", "Dibuang ke sungai", "Dikubur dalam plastik", "Dijadikan kompos"],
+                    correct: 3,
+                    emoji: "🌱"
+                },
+                {
+                    question: "Kegiatan berikut yang termasuk kampanye lingkungan adalah...",
+                    options: ["Lomba balap motor", "Kerja bakti Membersihkan lingkungan", "Bermain gadget seharian", "menebang pohon sembarangan"],
+                    correct: 1,
+                    emoji: "🧐"
+                },
+                {
+                    question: "Apa yang harus kita lakukan saat kita mengetahui teman kita membuang sampah sembarangan?",
+                    options: ["Ikut ikut buang sampah sembarang", "Acuh tak acuh", "Menegur secara sopan", "Memujinya"],
+                    correct: 2,
+                    emoji: "🤔"
+                },
+                {
+                    question: "Manakah tindakan terbaik untuk mengurangi sampah plastik?",
+                    options: ["Menggunakan kantong plastik baru", "Membeli air kemasan setiap hari", "Menggunakan sedotan plastik", "Menggunakan botol minum isi ulang"],
+                    correct: 3,
+                    emoji: "💧"
+                },
+                {
+                    question: "Apakah Anda bersedia mengikuti program kebersihan lingkungan di komunitas Anda?",
+                    options: ["Sangat bersedia", "Bersedia", "Mungkin", "Tidak bersedia"],
+                    correct: [0, 1, 2],
+                    emoji: "🤝"
+                }
+            ];
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let userAnswers = [];
+            let currentUser = {};
+            let pesertaList = [];
+
+            document.getElementById('userForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                currentUser = {
+                    nama: document.getElementById('nama').value,
+                    kelas: document.getElementById('kelas').value,
+                    skor: 0
+                };
+                showPage(quizPage);
+                startQuiz();
+            });
+
+            retakeQuizButton.addEventListener('click', () => {
+                currentQuestionIndex = 0;
+                score = 0;
+                userAnswers = [];
+                document.getElementById('resultSection').classList.add('hidden');
+                document.getElementById('quizContent').classList.remove('hidden');
+                startQuiz();
+            });
+
+            function startQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                userAnswers = [];
+                updateScore();
+                showQuestion();
+            }
+
+            function showQuestion() {
+                if (currentQuestionIndex >= quizQuestions.length) {
+                    showResults();
+                    return;
+                }
+                const question = quizQuestions[currentQuestionIndex];
+                const quizContent = document.getElementById('quizContent');
+                const progress = ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
+
+                document.getElementById('progressBar').style.width = `${progress}%`;
+                document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+
+                quizContent.innerHTML = `
+                <div class="p-8 rounded-2xl shadow-xl fade-in" style="background-color: #ffffff;">
+                    <div class="text-center mb-6"><span class="text-6xl">${question.emoji}</span></div>
+                    <h3 class="text-2xl font-bold mb-6 text-center" style="color: #065f46;">${question.question}</h3>
+                    <div class="space-y-4">
+                        ${question.options.map((option, index) => `
+                            <div class="quiz-option p-4 rounded-xl border-2 border-gray-200 hover:border-green-500" 
+                                style="background-color: #f0fdf4;" data-index="${index}">
+                                <span class="text-lg font-medium" style="color: #065f46;">${String.fromCharCode(65 + index)}. ${option}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+                const options = quizContent.querySelectorAll('.quiz-option');
+                options.forEach(option => {
+                    option.addEventListener('click', () => handleAnswer(parseInt(option.dataset.index)));
+                });
+            }
+
+            function handleAnswer(selectedIndex) {
+                const question = quizQuestions[currentQuestionIndex];
+                const options = document.querySelectorAll('.quiz-option');
+                options.forEach(opt => opt.style.pointerEvents = 'none');
+                const selectedOption = options[selectedIndex];
+
+                let isCorrect = Array.isArray(question.correct)
+                    ? question.correct.includes(selectedIndex)
+                    : selectedIndex === question.correct;
+
+                if (isCorrect) {
+                    selectedOption.classList.add('correct');
+                    selectedOption.style.backgroundColor = '#d1fae5';
+                    selectedOption.style.borderColor = '#10b981';
+                    score++;
+                    updateScore();
+                } else {
+                    selectedOption.classList.add('wrong');
+                    selectedOption.style.backgroundColor = '#fee2e2';
+                    selectedOption.style.borderColor = '#ef4444';
+
+                    if (Array.isArray(question.correct)) {
+                        question.correct.forEach(index => {
+                            options[index].style.backgroundColor = '#d1fae5';
+                            options[index].style.borderColor = '#10b981';
+                        });
+                    } else {
+                        options[question.correct].style.backgroundColor = '#d1fae5';
+                        options[question.correct].style.borderColor = '#10b981';
+                    }
+                }
+
+                userAnswers.push(selectedIndex);
+
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    showQuestion();
+                }, 1500);
+            }
+
+
+            function updateScore() {
+                const scoreValue = document.getElementById('scoreValue');
+                if (scoreValue) {
+                    scoreValue.textContent = score;
+                }
+            }
+
+            function showResults() {
+                document.getElementById('quizContent').classList.add('hidden');
+                document.getElementById('resultSection').classList.remove('hidden');
+                document.getElementById('finalScore').textContent = score;
+
+                currentUser.skor = score;
+                pesertaList.push(currentUser);
+
+                document.getElementById('lihatSkor').onclick = () => {
+                    showPage(scorePage);
+                    scoreList.innerHTML = pesertaList.map((p, i) => `
+                    <div class="bg-white p-4 rounded-xl shadow">
+                        <strong>${i + 1}. ${p.nama}</strong> (${p.kelas})<br>
+                        Skor: <span class="text-green-600 font-bold">${p.skor}/10</span>
+                    </div>
+                `).join('');
+                };
+
+                const percentage = (score / quizQuestions.length) * 100;
+                let emoji = '🎉', message = '';
+                if (percentage === 100) { emoji = '🏆'; message = 'Rispek! Kamu adalah juara kebersihan lingkungan!'; }
+                else if (percentage >= 80) { emoji = '🤩'; message = 'Keren! Kamu sudah bisa disebut SIGMA.'; }
+                else if (percentage >= 60) { emoji = '👍'; message = 'Bagus! Kamu sudah memiliki dasar yang baik.'; }
+                else if (percentage >= 40) { emoji = '💪'; message = 'Cukup baik! Mari tingkatkan kesadaran kita lagi.'; }
+                else { emoji = '🤣'; message = 'Kamu perlu belajar lebih banyak tentang kebersihan lingkungan.'; }
+
+                document.getElementById('resultEmoji').textContent = emoji;
+                document.getElementById('resultMessage').textContent = message;
+            }
+
+            async function onConfigChange(config) {
+                const landingContent = landingPage.querySelector('.relative.z-20');
+                const primaryColor = config.primary_color || defaultConfig.primary_color;
+                const accentColor = config.accent_color || defaultConfig.accent_color;
+
+
+
+                if (document.getElementById('startButton')) {
+                    document.getElementById('startButton').style.backgroundColor = primaryColor;
+                }
+
+            }
+
+            if (window.elementSdk) {
+                window.elementSdk.init({ defaultConfig, onConfigChange });
+            } else {
+                onConfigChange(defaultConfig);
+            }
+
+            showPage(landingPage);
+        </script>
+        <script>
+        </script>
+</body>
+
+</html>
